@@ -1,41 +1,61 @@
- gladiator = {
-        'health': health,
-        'rage': rage,
-        'damage_low': damage_low,
-        'damage_high': damage_high
-    }
-    return gladiator
+from core import *
+
 
 def test_new_gladiator():
-    assert test_new_gladiator(25, 50, 75, 100) == {
-        'health': 25,
+    assert new_gladiator(20, 50, 70, 90) == {
+        'health': 20,
         'rage': 50,
+        'damage_low': 70,
+        'damage_high': 90
+    }
+    assert new_gladiator(25, 55, 75, 100) == {
+        'health': 25,
+        'rage': 55,
         'damage_low': 75,
         'damage_high': 100
-        }
+    }
 
-        assert test_attack(20, 40, 60, 80) == {
-        'health': 20,
-        'rage': 40,
-        'damage_low': 60,
-        'damage_high': 80
-        }
 
-        assert test_heal(0, 5, 10, 15) == {
+def test_new_attack_no_rage():
+    attacker = new_gladiator(100, 0, 10, 10)
+    defender = new_gladiator(90, 55, 10, 20)
+    attack(attacker, defender)
+    assert attacker['rage'] == 15
+    assert defender['health'] == 80
+
+
+def test_new_attack_no_rage_dl_dh():
+    attacker = new_gladiator(100, 0, 10, 30)
+    defender = new_gladiator(90, 55, 10, 20)
+    attack(attacker, defender)
+    assert attacker['rage'] == 15
+    assert defender['health'] >= 60 and defender['health'] <= 80
+
+
+def test_new_attack_with_rage():
+    attacker = new_gladiator(100, 100, 10, 10)
+    defender = new_gladiator(90, 55, 10, 20)
+    attack(attacker, defender)
+    assert attacker['rage'] == 0
+    assert defender['health'] == 70
+
+
+def test_new_heal():
+    assert heal(0, 5, 10, 15) == {
         'health': 0,
         'rage': 5,
         'damage_low': 10,
         'damage_high': 15
-        }
+    }
+
 
 def test_is_dead():
-    assert is_dead(12, 14, 16, 18) == {
-    assert not is_dead({'health': 12}),
-    assert is_dead({'rage': 14}),
-    assert not is_dead({'damage_low': 16}),
-    assert is_dead({'damage_high': 18})
-    }
-    
-def test_attack(): 
-    attack = {'health':80, 'rage':70, 'damage_low':60, 'damage_high':50}
-    defender = {'health':100, 'rage':67, 'damage_low':60, 'damage_high':50}
+    assert not is_dead({'health': 100})
+    assert not is_dead({'health': 14})
+    assert not is_dead({'health': 16})
+    assert is_dead({'health': 0})
+
+
+def test_attack():
+    attack = {'health': 80, 'rage': 70, 'damage_low': 60, 'damage_high': 50}
+    defender = {'health': 100, 'rage': 67, 'damage_low': 60, 'damage_high': 50}

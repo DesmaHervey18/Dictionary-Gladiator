@@ -40,13 +40,13 @@ def test_new_attack_with_rage():
     assert defender['health'] == 70
 
 
-def test_new_heal():
-    assert heal(0, 5, 10, 15) == {
-        'health': 0,
-        'rage': 5,
-        'damage_low': 10,
-        'damage_high': 15
-    }
+# def test_new_heal():
+#     assert heal(0, 5, 10, 15) == {
+#         'health': 0,
+#         'rage': 5,
+#         'damage_low': 10,
+#         'damage_high': 15
+#     }
 
 
 def test_is_dead():
@@ -59,3 +59,24 @@ def test_is_dead():
 def test_attack():
     attack = {'health': 80, 'rage': 70, 'damage_low': 60, 'damage_high': 50}
     defender = {'health': 100, 'rage': 67, 'damage_low': 60, 'damage_high': 50}
+
+
+def test_heal_10_health():
+    attacker = new_gladiator(75, 60, 20, 20)
+    heal(attacker)
+    assert attacker['health'] == 80
+    assert attacker['rage'] == 50
+
+
+def test_heal_0_health():
+    attacker = new_gladiator(85, 0, 30, 30)
+    heal(attacker)
+    assert attacker['health'] == 85
+    assert attacker['rage'] == 0
+
+
+def test_is_dead():
+    assert is_dead({'health': 0})
+    assert is_dead({'health': -1})
+    assert not is_dead({'health': 100})
+    assert not is_dead({'health': 1})
